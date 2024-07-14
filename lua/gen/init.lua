@@ -126,10 +126,15 @@ function create_window(cmd, opts)
     function setup_split()
         M.result_buffer = vim.fn.bufnr("%")
         M.float_win = vim.fn.win_getid()
-        vim.api.nvim_buf_set_option(M.result_buffer, "filetype", "markdown")
-        vim.api.nvim_buf_set_option(M.result_buffer, "buftype", "nofile")
-        vim.api.nvim_win_set_option(M.float_win, "wrap", true)
-        vim.api.nvim_win_set_option(M.float_win, "linebreak", true)
+        vim.api.nvim_set_option_value("filetype", "markdown", { buf = M.result_buffer })
+        vim.api.nvim_set_option_value("buftype", "nofile", { buf = M.result_buffer })
+        vim.api.nvim_set_option_value("wrap", true, { win = M.float_win })
+        vim.api.nvim_set_option_value("linebreak", true, { win = M.float_win })
+
+        -- vim.api.nvim_buf_set_option(M.result_buffer, "filetype", "markdown")
+        -- vim.api.nvim_buf_set_option(M.result_buffer, "buftype", "nofile")
+        -- vim.api.nvim_win_set_option(M.float_win, "wrap", true)
+        -- vim.api.nvim_win_set_option(M.float_win, "linebreak", true)
     end
     if M.display_mode == "float" then
         if M.result_buffer then
@@ -137,7 +142,8 @@ function create_window(cmd, opts)
         end
         local win_opts = vim.tbl_deep_extend("force", get_window_options(), opts.win_config)
         M.result_buffer = vim.api.nvim_create_buf(false, true)
-        vim.api.nvim_buf_set_option(M.result_buffer, "filetype", "markdown")
+        -- vim.api.nvim_buf_set_option(M.result_buffer, "filetype", "markdown")
+        vim.api.nvim_set_option_value("filetype", "markdown", { buf = M.result_buffer })
 
         M.float_win = vim.api.nvim_open_win(M.result_buffer, true, win_opts)
     elseif M.display_mode == "horizontal-split" then
